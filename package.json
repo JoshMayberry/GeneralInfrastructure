@@ -1,0 +1,18 @@
+{
+	"name": "com.jmayberry.generalinfrastructure",
+	"displayName": "General Infrastructure",
+	"version": "1.0.0",
+	"unity": "2021.1",
+	"description": "Things basically every game I make would need.",
+	"keywords": [
+		"utility"
+	],
+	"dependencies": {
+		"com.unity.postprocessing": "3.2.2",
+		"com.unity.cinemachine": "2.9.7"
+	},
+	"author": {
+		"name": "jmayberry",
+		"email": "joshua.mayberry1991@gmail.com"
+	}
+}
