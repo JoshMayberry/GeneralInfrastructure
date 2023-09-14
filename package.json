@@ -14,5 +14,12 @@
 	"author": {
 		"name": "jmayberry",
 		"email": "joshua.mayberry1991@gmail.com"
-	}
+	},
+	"samples": [
+		{
+			"displayName": "2D",
+			"description": "Contains Manager Prefabs",
+			"path": "Samples~/2D"
+		}
+	]
 }
