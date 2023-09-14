@@ -39,8 +39,8 @@ namespace jmayberry.GeneralInfrastructure {
         [InspectorRename("Game Over Scene")] public string gameOver_scene;
 
         [Header("Other")]
-        [HideInInspector] public Scene currentScene;
         [Readonly] public bool is_paused;
+        [HideInInspector] public Scene currentScene;
         public UnityEvent EventPauseStart;
         public UnityEvent EventPauseEnd;
         public UnityEvent EventFreezeTimeStart;
