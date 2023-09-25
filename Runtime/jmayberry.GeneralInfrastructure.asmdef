@@ -4,7 +4,8 @@
     "references": [
         "Cinemachine",
         "Unity.Postprocessing.Runtime",
-        "jmayberry.CustomAttributes"
+        "jmayberry.CustomAttributes",
+        "Unity.InputSystem"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

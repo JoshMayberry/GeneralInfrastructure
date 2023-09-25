@@ -20,6 +20,16 @@
 			"displayName": "2D",
 			"description": "Contains Manager Prefabs",
 			"path": "Samples~/2D"
+		},
+		{
+			"displayName": "VirtualJoystick",
+			"description": "How to set up the virtual joystick",
+			"path": "Samples~/VirtualJoystick"
+		},
+		{
+			"displayName": "WaveManager",
+			"description": "How to set up the wave manager",
+			"path": "Samples~/WaveManager"
 		}
 	]
 }

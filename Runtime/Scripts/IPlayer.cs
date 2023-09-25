@@ -1,5 +1,5 @@
 namespace jmayberry.GeneralInfrastructure {
-        public interface IPlayer {
-     
-    }
+	public interface IPlayer {
+	 
+	}
 }

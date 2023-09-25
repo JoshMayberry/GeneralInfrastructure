@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-namespace jmayberry.GeneralInfrastructure {
+namespace jmayberry.GeneralInfrastructure.SceneManagement {
 	public class LevelTransition : MonoBehaviour {
 		Animator anim;
 		string levelName;
