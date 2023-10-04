@@ -5,7 +5,9 @@
         "Cinemachine",
         "Unity.Postprocessing.Runtime",
         "jmayberry.CustomAttributes",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "Unity.Splines",
+        "Unity.Mathematics"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

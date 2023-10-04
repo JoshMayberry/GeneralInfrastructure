@@ -30,6 +30,11 @@
 			"displayName": "WaveManager",
 			"description": "How to set up the wave manager",
 			"path": "Samples~/WaveManager"
+		},
+		{
+			"displayName": "PowerupSpawner",
+			"description": "How to set up the wave manager in an infinite loop",
+			"path": "Samples~/PowerupSpawner"
 		}
 	]
 }
