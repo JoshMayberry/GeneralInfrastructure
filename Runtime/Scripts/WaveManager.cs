@@ -18,6 +18,7 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 		[Header("Setup")]
 		public U[] waves;
 		public float timeBetweenWaves;
+		public Transform spawnParent;
 
 		[Header("Internal")]
 		public UnitySpawner<T> spawner;
@@ -84,7 +85,7 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 					T randomPrefab = this.currentWave.possible[Random.Range(0, this.currentWave.possible.Length)];
 					Transform randomSpawnPoint = this.spawnPoints[Random.Range(0, this.spawnPoints.Length)];
 
-					T spawnling = this.spawner.Spawn(randomPrefab, randomSpawnPoint);
+					T spawnling = this.spawner.Spawn(randomPrefab, randomSpawnPoint, this.spawnParent);
 					this.OnSpawn(spawnling, this.currentWave, i, j);
 
 					yield return new WaitForSeconds(this.currentWave.timeBetweenSpawns);

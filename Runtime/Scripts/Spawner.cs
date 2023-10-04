@@ -30,34 +30,58 @@ namespace jmayberry.GeneralInfrastructure.Spawner {
 		}
 
 		public T Spawn() {
-			return this.Spawn(this.prefabDefault, Vector3.zero, Quaternion.identity);
-		}
+			return this.Spawn(this.prefabDefault, Vector3.zero, Quaternion.identity, null);
+        }
 
-		public T Spawn(T prefab) {
-			return this.Spawn(prefab, Vector3.zero, Quaternion.identity);
-		}
+        public T Spawn(Transform transform) {
+            return this.Spawn(this.prefabDefault, transform.position, transform.rotation, null);
+        }
 
-		public T Spawn(Vector3 position) {
-			return this.Spawn(this.prefabDefault, position, Quaternion.identity);
-		}
+        public T Spawn(Transform transform, Transform parentObject) {
+            return this.Spawn(this.prefabDefault, transform.position, transform.rotation, parentObject);
+        }
 
-		public T Spawn(Transform transform) {
-			return this.Spawn(this.prefabDefault, transform.position, transform.rotation);
-		}
+        public T Spawn(Vector3 position) {
+            return this.Spawn(this.prefabDefault, position, Quaternion.identity, null);
+        }
 
-		public T Spawn(Vector3 position, Quaternion rotation) {
-			return this.Spawn(this.prefabDefault, position, rotation);
-		}
+        public T Spawn(Vector3 position, Transform parentObject) {
+            return this.Spawn(this.prefabDefault, position, Quaternion.identity, parentObject);
+        }
 
-		public T Spawn(T prefab, Vector3 position) {
-			return this.Spawn(prefab, position, Quaternion.identity);
-		}
+        public T Spawn(Vector3 position, Quaternion rotation) {
+            return this.Spawn(this.prefabDefault, position, rotation, null);
+        }
 
-		public T Spawn(T prefab, Transform transform) {
-			return this.Spawn(prefab, transform.position, transform.rotation);
-		}
+        public T Spawn(Vector3 position, Quaternion rotation, Transform parentObject) {
+            return this.Spawn(this.prefabDefault, position, rotation, parentObject);
+        }
 
-		public T Spawn(T prefab, Vector3 position, Quaternion rotation) {
+        public T Spawn(T prefab) {
+            return this.Spawn(prefab, Vector3.zero, Quaternion.identity, null);
+        }
+
+        public T Spawn(T prefab, Transform transform) {
+            return this.Spawn(prefab, transform.position, transform.rotation, null);
+        }
+
+        public T Spawn(T prefab, Transform transform, Transform parentObject) {
+            return this.Spawn(prefab, transform.position, transform.rotation, parentObject);
+        }
+
+        public T Spawn(T prefab, Vector3 position) {
+            return this.Spawn(prefab, position, Quaternion.identity, null);
+        }
+
+        public T Spawn(T prefab, Vector3 position, Transform parentObject) {
+            return this.Spawn(prefab, position, Quaternion.identity, parentObject);
+        }
+
+        public T Spawn(T prefab, Vector3 position, Quaternion rotation) {
+            return this.Spawn(prefab, position, rotation, null);
+        }
+
+        public T Spawn(T prefab, Vector3 position, Quaternion rotation, Transform parentObject) {
 			T spawnling;
 
 			if (inactiveList.Count > 0) {
@@ -65,12 +89,19 @@ namespace jmayberry.GeneralInfrastructure.Spawner {
 				inactiveList.RemoveAt(inactiveList.Count - 1);
 				spawnling.transform.position = position;
 				spawnling.transform.rotation = rotation;
-			}
-			else {
-				spawnling = GameObject.Instantiate(prefab, position, rotation);
-			}
 
-			spawnling.gameObject.SetActive(true);
+				if ((parentObject != null) && (spawnling.transform.parent != parentObject.transform)) {
+                    spawnling.transform.parent = parentObject.transform;
+                }
+            }
+            else if (parentObject != null) {
+                spawnling = GameObject.Instantiate(prefab, position, rotation, parentObject);
+            }
+            else {
+                spawnling = GameObject.Instantiate(prefab, position, rotation);
+            }
+
+            spawnling.gameObject.SetActive(true);
 			activeList.Add(spawnling);
 			spawnling.OnSpawn(this);
 			return spawnling;
