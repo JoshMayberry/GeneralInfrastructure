@@ -129,21 +129,20 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 
 		private bool DoSpawn(int i, int j) {
 			T randomPrefab = this.currentWave.possible[UnityEngine.Random.Range(0, this.currentWave.possible.Length)];
-			Transform randomSpawnPoint = this.GetSpawnLocation();
+            Vector3 randomSpawnPoint = this.GetSpawnLocation();
 
 			T spawnling = this.spawner.Spawn(randomPrefab, randomSpawnPoint, this.spawnParent);
 			return this.OnSpawn(spawnling, this.currentWave, i, j);
 		}
 
-		public virtual Transform GetSpawnLocation() {
-			Vector3 spawnPosition = Vector3.zero;
+		public virtual Vector3 GetSpawnLocation() {
 			switch (this.spawnLocationType) {
 				case SpawnLocationType.FromList:
 					if (this.spawnPoints.Length == 0) {
 						throw new Exception("Missing *spawnPoints*");
 					}
 
-					return this.spawnPoints[UnityEngine.Random.Range(0, this.spawnPoints.Length)];
+					return this.spawnPoints[UnityEngine.Random.Range(0, this.spawnPoints.Length)].position;
 
 				case SpawnLocationType.WithinCircle: {
 					if (this.spawnRadiusCenter == null) {
@@ -160,8 +159,7 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 						randomDirection.y * this.spawnRadius,
 						this.is2D ? 0 : randomDirection.z * this.spawnRadius
 					);
-					spawnPosition = spawnRadiusCenter.position + scaledDirection;
-					break;
+					return spawnRadiusCenter.position + scaledDirection;
 				}
 
 				case SpawnLocationType.WithinBox: {
@@ -169,12 +167,11 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 						throw new Exception("Missing *spawnBox*");
 					}
 
-						spawnPosition = new Vector3(
+					return new Vector3(
 						UnityEngine.Random.Range(this.spawnBox.min.x, this.spawnBox.max.x),
 						UnityEngine.Random.Range(this.spawnBox.min.y, this.spawnBox.max.y),
 						UnityEngine.Random.Range(this.spawnBox.min.z, this.spawnBox.max.z)
 					);
-					break;
 				}
 
 				case SpawnLocationType.AlongSpline: {
@@ -182,8 +179,7 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 						throw new Exception("Missing *spawnSpline*");
 					}
 
-					spawnPosition = spawnSpline.EvaluatePosition(UnityEngine.Random.value);
-					break;
+					return spawnSpline.EvaluatePosition(UnityEngine.Random.value);
 				}
 
 				case SpawnLocationType.WithinCollider: {
@@ -193,18 +189,16 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 
 					if (this.is2D) {
 						if (this.spawnCollider is BoxCollider2D box) {
-							spawnPosition = new Vector3(
+							return new Vector3(
 								UnityEngine.Random.Range(box.offset.x - box.size.x / 2, box.offset.x + box.size.x / 2),
 								UnityEngine.Random.Range(box.offset.y - box.size.y / 2, box.offset.y + box.size.y / 2),
 								0
 							);
-							break;
 						}
 
 						if (this.spawnCollider is CircleCollider2D circle) {
 							Vector2 randomDirection = UnityEngine.Random.insideUnitCircle * circle.radius;
-							spawnPosition = circle.offset + randomDirection;
-							break;
+							return circle.offset + randomDirection;
 						}
 
 						if (this.spawnCollider is PolygonCollider2D) {
@@ -215,17 +209,13 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 								);
 
 								if (this.spawnCollider.OverlapPoint(randomPos)) {
-									spawnPosition = randomPos;
-									break;
+									return randomPos;
 								}
 							}
 
-							if (spawnPosition == Vector3.zero) {
-								Debug.LogWarning("Failed to find a valid spawn point within the polygon collider.");
-							}
-							
-							break;
-						}
+							Debug.LogWarning("Failed to find a valid spawn point within the polygon collider.");
+							return Vector3.zero;
+                        }
 					}
 
 					throw new Exception("Unknown Collider Type");
@@ -238,10 +228,6 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 				default:
 					throw new Exception($"Unknown spawn location type '{this.spawnLocationType}'");
 			}
-
-			Transform spawnTransform = new GameObject("SpawnPoint").transform;
-			spawnTransform.position = spawnPosition;
-			return spawnTransform;
 		}
 
 		public abstract bool OnSpawn(T spawnling, U wave, int waveIndex, int spawnlingIndex);
