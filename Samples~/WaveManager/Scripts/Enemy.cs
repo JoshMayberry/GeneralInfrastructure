@@ -2,46 +2,49 @@ using UnityEngine;
 using UnityEngine.Splines;
 using jmayberry.GeneralInfrastructure.Spawner;
 
-public class Enemy : MonoBehaviour, ISpawnable {
-    SplineAnimate splineAnim;
-    public int health = 2;
-    private int healthMax;
+namespace jmayberry.GeneralInfrastructure.Samples {
 
-    private UnitySpawner<Enemy> spawner;
+    public class Enemy : MonoBehaviour, ISpawnable {
+        SplineAnimate splineAnim;
+        public int health = 2;
+        private int healthMax;
 
-    void Awake() {
-        this.healthMax = this.health;
-        this.splineAnim = this.GetComponent<SplineAnimate>();
-    }
+        private UnitySpawner<Enemy> spawner;
 
-    void Reset() {
-        this.health = this.healthMax;
-    }
-
-    internal void WalkPath(SplineContainer path) {
-        splineAnim.Container = path;
-        splineAnim.Play();
-    }
-
-    public void Damage(int amount) {
-        this.health -= amount;
-        if (health <= 0f) {
-            this.Die();
-        }
-    }
-
-    public void Die() {
-        this.spawner.Despawn(this);
-    }
-
-    public void OnSpawn(object spawner) {
-        if (spawner is UnitySpawner<Enemy> enemySpawner) {
-            this.spawner = enemySpawner;
+        void Awake() {
+            this.healthMax = this.health;
+            this.splineAnim = this.GetComponent<SplineAnimate>();
         }
 
-        this.Reset();
-    }
+        void Reset() {
+            this.health = this.healthMax;
+        }
 
-    public void OnDespawn(object spawner) {
+        internal void WalkPath(SplineContainer path) {
+            splineAnim.Container = path;
+            splineAnim.Play();
+        }
+
+        public void Damage(int amount) {
+            this.health -= amount;
+            if (health <= 0f) {
+                this.Die();
+            }
+        }
+
+        public void Die() {
+            this.spawner.Despawn(this);
+        }
+
+        public void OnSpawn(object spawner) {
+            if (spawner is UnitySpawner<Enemy> enemySpawner) {
+                this.spawner = enemySpawner;
+            }
+
+            this.Reset();
+        }
+
+        public void OnDespawn(object spawner) {
+        }
     }
 }
