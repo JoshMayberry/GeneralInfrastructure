@@ -5,7 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Rendering.PostProcessing;
 using Cinemachine;
 using jmayberry.CustomAttributes;
-using jmayberry.GeneralInfrastructure.SceneManagement;
+using jmayberry.SceneTransitions;
 
 namespace jmayberry.GeneralInfrastructure.Manager {
 	public class GameManager : MonoBehaviour {
@@ -35,7 +35,6 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 		public UnityEvent EventScreenPulseEnd;
 
 		[Header("Level Transitions")]
-		[Required] public LevelTransition levelTransition;
 		[InspectorRename("Change Scene on GameOver")] public bool gameOver_doReset;
 		[InspectorRename("Game Over Scene")] public string gameOver_scene;
 
@@ -61,8 +60,6 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 			this.enemyLayer = LayerMask.GetMask("Enemy");
 			this.groundLayer = LayerMask.GetMask("Ground");
 
-			this.levelTransition = FindAnyObjectByType<LevelTransition>();
-
 			this.vCam = FindAnyObjectByType<CinemachineVirtualCamera>();
 			this.vCam_noise = this.vCam.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
 
@@ -78,15 +75,11 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 			}
 
 			if ((this.gameOver_scene != null) || (this.gameOver_scene != "")) {
-				this.ChangeScene(this.gameOver_scene);
+				SceneTransitionManager.instance.LoadScene(this.gameOver_scene);
 				return;
 			}
 
-			this.ChangeScene(this.currentScene.name);
-		}
-
-		public void ChangeScene(string sceneName) {
-			levelTransition.ChangeScene(sceneName);
+			SceneTransitionManager.instance.LoadScene(this.currentScene.name);
 		}
 
 		public bool CheckIsGround(Collider2D other) {

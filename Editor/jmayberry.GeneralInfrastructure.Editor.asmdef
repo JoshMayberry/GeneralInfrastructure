@@ -2,7 +2,8 @@
     "name": "jmayberry.GeneralInfrastructure.Editor",
     "rootNamespace": "jmayberry.GeneralInfrastructure.Editor",
     "references": [
-        "jmayberry.GeneralInfrastructure"
+        "jmayberry.GeneralInfrastructure",
+        "jmayberry.SceneTransitions.Editor"
     ],
     "includePlatforms": [
         "Editor"
