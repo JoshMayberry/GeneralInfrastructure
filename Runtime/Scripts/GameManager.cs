@@ -49,7 +49,7 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 		public UnityEvent EventGameOver;
 
 		public static GameManager instance { get; private set; }
-		private void Awake() {
+		public virtual void Awake() {
 			if (instance != null) {
 				Debug.LogError("Found more than one GameManager in the scene.");
 			}
@@ -67,7 +67,7 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 			this.PPVolume.profile.TryGetSettings(out this.PPVolume_chromaticAberration);
 		}
 
-		public void GameOver() {
+		public virtual void GameOver() {
 			EventGameOver.Invoke();
 
 			if (!this.gameOver_doReset) {
@@ -82,7 +82,7 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 			SceneTransitionManager.instance.LoadScene(this.currentScene.name);
 		}
 
-		public bool CheckIsGround(Collider2D other) {
+		public virtual bool CheckIsGround(Collider2D other) {
 			// Convert the gameObject's layer into a bit mask
 			int objectLayerMask = 1 << other.gameObject.layer;
 
@@ -90,7 +90,7 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 			return ((this.groundLayer.value & objectLayerMask) > 0);
 		}
 
-		public IEnumerator ScreenShake(float? amplitude = null, float? frequency = null, float? time = null) {
+		public virtual IEnumerator ScreenShake(float? amplitude = null, float? frequency = null, float? time = null) {
 			EventScreenShakeStart.Invoke();
 			this.vCam_noise.m_AmplitudeGain = (amplitude.HasValue ? (float)amplitude : this.screenShake_amplitude);
 			this.vCam_noise.m_FrequencyGain = (frequency.HasValue ? (float)frequency : this.screenShake_frequency);
@@ -100,7 +100,7 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 			EventScreenShakeEnd.Invoke();
 		}
 
-		public IEnumerator ScreenPulse(float? intensity = null, float? time = null) {
+		public virtual IEnumerator ScreenPulse(float? intensity = null, float? time = null) {
 			EventScreenPulseStart.Invoke();
 			this.PPVolume_chromaticAberration.intensity.value = (intensity.HasValue ? (float)intensity : this.screenPulse_intensity);
 			yield return new WaitForSeconds((time.HasValue ? (float)time : this.screenPulse_time));
@@ -108,7 +108,7 @@ namespace jmayberry.GeneralInfrastructure.Manager {
 			EventScreenPulseEnd.Invoke();
 		}
 
-		public IEnumerator FreezeTime(float duration) {
+		public virtual IEnumerator FreezeTime(float duration) {
 			EventFreezeTimeStart.Invoke();
 			Time.timeScale = 0;
 			yield return new WaitForSecondsRealtime(duration);
